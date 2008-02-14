@@ -85,7 +85,7 @@ Welcome
  同様に、「<<<exampleproject>>>」の「<<<src>>>」フォルダの下一階層のみ、
  加えて、「<<<test>>>」フォルダの下にある「<<<HogeTest.java>>>」をリフレッシュする場合には、
 
- * <<<http://localhost:8386/refresh?exampleproject/src=ONE&test/HogeTest.java=ZERO>>>
+ * <<<http://localhost:8386/refresh?exampleproject/src=ONE&exampleproject/test/HogeTest.java=ZERO>>>
 
  []
 
