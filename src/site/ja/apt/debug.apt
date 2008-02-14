@@ -1,122 +1,206 @@
-ファイルの新規作成ウィザードで、
-ResourceSynchronizerグループにある「Debug JSP」を選択してウィザードを開始して下さい。
-<image src="../images/01_selectWizard.PNG" />
+ ------
+ResourceSynchronizer
+ ------
+ ------
+ ------
 
 
-ウィザードでは、以下の項目を設定して下さい。
--Context Root dir(コンテキストルートディレクトリ)
---エラー画面を出力するWebアプリケーションのコンテキストルートとなるディレクトリ
--Output dir(出力先ディレクトリ)
---「Context Root dir」以下にある、空のサブディレクトリか、存在しないディレクトリ名
-<image src="../02_wizardInit.PNG"/>
 
-Browseボタンをクリックすると、ディレクトリを選択する為のダイアログが起動します。
-<image src="../03_selectRoot.PNG"/>
+デバッグ用JSPを新規作成するには。
+
+ ファイルの新規作成ウィザードで、
+ ResourceSynchronizerグループにある「Debug JSP」を選択してウィザードを開始して下さい。
+
+[./images/01_selectWizard.png] 01_selectWizard
 
 
-「Context Root dir」を選択すると、自動的に「Output dir」が設定されます。
-デフォルトでは、「Context Root dir」のサブディレクトリとして「error」と言うディレクトリが設定されます。
-<image src="../04_maybefinish.PNG"/>
+ ウィザードでは、以下の項目を設定して下さい。
+
+[./images/02_wizardInit.png] 02_wizardInit
 
 
-二つの項目を設定したら、「Finish」ボタンを押します。
-そうすると、リソースの生成処理が開始されます。
-<image src="../05_createResources.PNG"/>
+ *Context Root dir(コンテキストルートディレクトリ)
+
+    *エラー画面を出力するWebアプリケーションのコンテキストルートとなるディレクトリ
+
+ *Output dir(出力先ディレクトリ)
+
+    *「Context Root dir」以下にある、空のサブディレクトリか、存在しないディレクトリ名
+
+ Browseボタンをクリックすると、ディレクトリを選択する為のダイアログが起動します。
+
+[./images/03_selectRoot.png] 03_selectRoot
 
 
-以下の様にリソースが生成されます。
-<image src="../06_createdResources.PNG"/>
+ 「Context Root dir」を選択すると、自動的に「Output dir」が設定されます。
+
+ デフォルトでは、「Context Root dir」のサブディレクトリとして「error」と言うディレクトリが設定されます。
+
+[./images/04_maybefinish.png] 04_maybefinish
 
 
-次に、エラー画面を出力する為のJSPを作成します。
-ここでは、サンプルとして「bugbug.jsp」を作成しました。
-<image src="../07_happenErrorJsp.PNG"/>
-「bugbug.jsp」の内容は以下の様になっています。
-このコードでは、6行目でNullPointerExceptionが発生する筈です。
+ 二つの項目を設定したら、「Finish」ボタンを押します。
+
+ そうすると、リソースの生成処理が開始されます。
+ 
+[./images/05_createResources.png] 05_createResources
+
+
+ 以下の様にリソースが生成されます。
+ 
+[./images/06_createdResources.png] 06_createdResources
+
+デバッグ用JSPを動作させるには。
+
+ エラー画面を出力する為のJSPを作成します。
+
+ ここでは、サンプルとして「bugbug.jsp」を作成しました。
+ 
+[./images/07_happenErrorJsp.png] 07_happenErrorJsp
+ 
+ 「bugbug.jsp」の内容は以下の様になっています。
+
+ このコードでは、6行目でNullPointerExceptionが発生する筈です。
+
 ----------------------------------------
-<%@ page contentType="text/html; charset=UTF-8"  errorPage="/error/debug.jsp" %>
-<html>
-<body>
-<%
- java.util.Hashtable map = new java.util.Hashtable();
- out.println(map.put(null,null));
+ <%@ page contentType="text/html; charset=UTF-8"  errorPage="/error/debug.jsp" %>
+ <html>
+ <body>
+ <%
+  java.util.Hashtable map = new java.util.Hashtable();
+  out.println(map.put(null,null));
  %>
-</body></html>
+ </body></html>
 ----------------------------------------
 
-WTPやSysdeoTomcatPluginを使う等して、
-当該JSPを含むプロジェクトをサーブレットコンテナにデプロイした上で、
-eclipseのInternalWebBrowserを使用し当該JSPにアクセスします。
-InternalWebBrowserは、特別なツールを使っていない限り、
-Window > Show View > Other... > General > InternalWebBrowser
-で開く事が出来ます。
-<image src="../08_errorscreenInEclipse.PNG"/>
+ WTPやSysdeoTomcatPluginを使う等して、
+ 当該JSPを含むプロジェクトをサーブレットコンテナにデプロイした上で、
+ eclipseのInternalWebBrowserを使用し当該JSPにアクセスします。
+ InternalWebBrowserは、特別なツールを使っていない限り、
+
+ Window > Show View > Other... > General > InternalWebBrowser
+
+ で開く事が出来ます。
+
+[./images/08_errorscreenInEclipse.png] 08_errorscreenInEclipse
 
 
-このエラー画面では、以下の情報をブラウザだけで確認する事が出来ます。
--StackTrace
---発生した例外を、Grid表示します。
--HTTP
---ContextPath(コンテキストパス)
---RequestURI(エラー画面を表示する元となったHTTPリクエストのリクエストURI。<br>HttpServletRequestに「javax.servlet.error.request_uri」をキーに設定されている値
---RuquestMethod(エラー画面を表示する元となったHTTPリクエストのHTTPリクエストメソッド)
--Request Parameters
---エラー画面を表示する元となったHTTPリクエストのURLデコードされたHTTPリクエストパラメータの一覧
--Http Headers
---エラー画面を表示する元となったHTTPリクエストのHTTPヘッダの一覧
--Cookie
---当該ホストとやりとりされているHTTPクッキーの一覧
--Java
---サーブレットコンテナを起動したJVMのシステムプロパティの一覧
--Request Attributes
---エラー画面を表示する元となったHTTPリクエストのHttpServletRequest#getAttributeで取得出来る値の一覧
--Session Attributes
---エラー画面を表示する元となったHTTPリクエストに紐付くHttpSession#getAttributeで取得出来る値の一覧
--Application Attributes
---エラー画面を表示する元となったHTTPリクエストを送信したサーブレットコンテナ内にあるServletContext#getAttributeで取得出来る値の一覧
+ Internet Explorerでは、以下の様に表示されます。
 
-StackTraceはデフォルトで表示されていますが、それ以外の項目は、
-左側のMenuにあるツリーをクリックする事でStackTraceのタブの右側に新しいタブとして表示されます。
-又、StackTrace以外の表示項目はGridの上部にあるテキストフィールドに文字を入力する事で、
-Grid内のキーを部分一致でフィルタリングする事が出来ます。
+[./images/ie.png]
 
-<image src="../09_manyOfDebugInformations.PNG"/>
+ firefoxでは、以下の様に表示されます。
+
+[./images/firefox.png]
 
 
-表示されているタブのコンテキストメニューとして、2つの機能があります。
--Close Tab
---コンテキストメニューを表示する際にクリックしたタブを閉じます。
--Close Other Tabs
---コンテキストメニューを表示する際にクリックしたタブ及びStackTraceのタブを除く全てのタブを閉じます。
-<image src="../10_tabContextMenu.PNG"/>
+ このエラー画面では、以下の情報をブラウザだけで確認する事が出来ます。
+
+ *StackTrace
+
+     *発生した例外を、Grid表示します。
+
+ *HTTP
+
+     *ContextPath(コンテキストパス)
+
+     *RequestURI(エラー画面を表示する元となったHTTPリクエストのリクエストURI。
+     HttpServletRequestに「javax.servlet.error.request_uri」をキーに設定されている値
+
+     *RuquestMethod(エラー画面を表示する元となったHTTPリクエストのHTTPリクエストメソッド)
+
+ *Request Parameters
+
+     *エラー画面を表示する元となったHTTPリクエストのURLデコードされたHTTPリクエストパラメータの一覧
+
+ *Http Headers
+
+     *エラー画面を表示する元となったHTTPリクエストのHTTPヘッダの一覧
+
+ *Cookie
+
+     *当該ホストとやりとりされているHTTPクッキーの一覧
+
+ *Java
+
+     *サーブレットコンテナを起動したJVMのシステムプロパティの一覧
+
+ *Request Attributes
+
+     *エラー画面を表示する元となったHTTPリクエストのHttpServletRequest#getAttributeで取得出来る値の一覧
+
+ *Session Attributes
+
+     *エラー画面を表示する元となったHTTPリクエストに紐付くHttpSession#getAttributeで取得出来る値の一覧
+
+ *Application Attributes
+
+     *エラー画面を表示する元となったHTTPリクエストを送信したサーブレットコンテナ内にあるServletContext#getAttributeで取得出来る値の一覧
+
+ []
+
+ StackTraceはデフォルトで表示されていますが、それ以外の項目は、
+ 左側のMenuにあるツリーをクリックする事でStackTraceのタブの右側に新しいタブとして表示されます。
+
+ 又、StackTrace以外の表示項目はGridの上部にあるテキストフィールドに文字を入力する事で、
+ Grid内のキーを部分一致でフィルタリングする事が出来ます。
 
 
-StackTraceに表示されたGridの行をダブルクリックするか、
-行の左端にあるアイコンをクリックすると、
-エラー画面とResourceSynchronizerがHTTP通信を行う為
-以下の様なローディングメッセージが表示されます。
-<image src="../11_stacktraceClicked.PNG"/>
+[./images/09_manyOfDebugInformations.png] 09_manyOfDebugInformations
 
 
-ここでResourceSynchronizerは、ダブルクリックされた行をエディタで開こうとします。
-ソースコードが存在しない場合等、
-ResourceSynchronizerが、ソースコードを発見出来なかった場合、特に何も起きません。
+ 表示されているタブのコンテキストメニューとして、2つの機能があります。
+
+ *Close Tab
+
+     *コンテキストメニューを表示する際にクリックしたタブを閉じます。
+
+ *Close Other Tabs
+
+     *コンテキストメニューを表示する際にクリックしたタブ及びStackTraceのタブを除く全てのタブを閉じます。
+
+[./images/10_tabContextMenu.png] 10_tabContextMenu
+
+[]
+
+ StackTraceに表示されたGridの行をダブルクリックするか、
+ 行の左端にあるアイコンをクリックすると、
+
+ エラー画面とResourceSynchronizerがHTTP通信を行う為
+ 以下の様なローディングメッセージが表示されます。
+
+[./images/11_stacktraceClicked.png] 11_stacktraceClicked
 
 
-この場合、java.util.Hashtableのコードが存在する為、
-NullPointerExceptionが発生した394行目がJavaエディタで開きました。
-<image src="../12_causeLineOpenInEditor.PNG"/>
+  ここでResourceSynchronizerは、ダブルクリックされた行をエディタで開こうとします。
+
+  ソースコードが存在しない場合等、
+ ResourceSynchronizerが、ソースコードを発見出来なかった場合、特に何も起きません。
 
 
-更に、エラー画面には、StackTraceの中で、ダブルクリックされた行のソースコードがシンタックスハイライトされた状態で表示されます。
-デフォルトでは、トレースで表示されている行番号の前後10行が出力されます。
-<image src="../13_causeLineRendered.PNG"/>
+  この場合、java.util.Hashtableのコードが存在する為、
+ NullPointerExceptionが発生した394行目がJavaエディタで開きました。
+
+[./images/12_causeLineOpenInEditor.png] 12_causeLineOpenInEditor
 
 
-これらの振る舞いは、エラー画面左側下段にある「Settings」をクリックして、
-その内容を表示した上でカスタマイズする事が出来ます。
--CodeLineSize
---前後何行のコードをエラー画面内に表示するか設定出来ます。<br>つまり、基本的には、設定された値のおよそ2倍の行がStackTraceの行に表示される事になります。
--OpneInEclipse
---デフォルト値はtrue。falseに設定する事で、eclipse内のウィンドウでスタックトレースに表示されたクラスを開かない様にできます。
-<image src="../14_custumize.PNG"/>
+ 更に、エラー画面には、StackTraceの中で、ダブルクリックされた行のソースコードがシンタックスハイライトされた状態で表示されます。
+ デフォルトでは、トレースで表示されている行番号の前後10行が出力されます。
+
+[./images/13_causeLineRendered.png] 13_causeLineRendered
+
+
+ これらの振る舞いは、エラー画面左側下段にある「Settings」をクリックして、
+ その内容を表示した上でカスタマイズする事が出来ます。
+
+ *CodeLineSize
+
+    *前後何行のコードをエラー画面内に表示するか設定出来ます。<br>つまり、基本的には、設定された値のおよそ2倍の行がStackTraceの行に表示される事になります。
+
+ *OpenInEclipse
+
+     *デフォルト値はtrue。falseに設定する事で、eclipse内のウィンドウでスタックトレースに表示されたクラスを開かない様にできます。
+
+[]
+
+[./images/14_custumize.png] 14_custumize
